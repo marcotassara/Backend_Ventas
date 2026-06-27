@@ -1,0 +1,32 @@
+{
+  "family": "back-despachos",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "__LABROLE_ARN__",
+  "taskRoleArn": "__LABROLE_ARN__",
+  "containerDefinitions": [
+    {
+      "name": "back-despachos",
+      "image": "__ECR_REGISTRY__/back-despachos:latest",
+      "portMappings": [{ "containerPort": 8081, "protocol": "tcp" }],
+      "essential": true,
+      "environment": [
+        { "name": "DB_ENDPOINT", "value": "__RDS_ENDPOINT__" },
+        { "name": "DB_PORT", "value": "3306" },
+        { "name": "DB_NAME", "value": "innovatech" },
+        { "name": "DB_USERNAME", "value": "appuser" },
+        { "name": "DB_PASSWORD", "value": "__DB_PASSWORD__" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/back-despachos",
+          "awslogs-region": "__AWS_REGION__",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
